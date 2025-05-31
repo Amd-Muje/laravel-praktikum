@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        if(env('APP_ENV') === 'production'){
+            URL::forceScheme('https');
+        }
         Gate::define("view-srudent", function (User $user){
             if ($user->role === "admin" || $user->role === "guest"){
                 return true;
